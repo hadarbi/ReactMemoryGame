@@ -1,13 +1,18 @@
+import React from 'react';
+
+/**
+ * Rank component displays a table of player ranks sorted by score.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.ranks - An object where keys are player names and values are scores.
+ * @returns {JSX.Element} The rendered table of ranks.
+ */
 function Rank({ ranks }) {
-
-    // Convert the ranks object to an array of [name, score] pairs
     const ranksArray = Object.entries(ranks);
-
-    // Sort the array by scores in descending order
     ranksArray.sort((a, b) => b[1] - a[1]);
 
     return (
-        <table class="container table table-striped my-3">
+        <table className="container table table-striped my-3">
             <thead>
                 <tr>
                     <th scope="col">Rank</th>
@@ -17,7 +22,7 @@ function Rank({ ranks }) {
             </thead>
             <tbody>
                 {ranksArray.map((item, itemIndex) => (
-                    <tr>
+                    <tr key={item[0]}>
                         <th scope="row">{itemIndex + 1}</th>
                         <td>{item[0]}</td>
                         <td>{item[1]}</td>

@@ -1,5 +1,23 @@
+/**
+ * Shuffles an array in place using the Fisher-Yates algorithm.
+ * @param {Array} array - The array to shuffle.
+ */
+const shuffleArray = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+};
 
-const buildGrid = (settings) => {
+/**
+ * Generates an array of shuffled card numbers based on the settings.
+ * Each number appears twice to represent pairs of cards.
+ * @param {Object} settings - The game settings.
+ * @param {number} settings.rows - The number of rows in the grid.
+ * @param {number} settings.columns - The number of columns in the grid.
+ * @returns {Array} - The array of shuffled card numbers.
+ */
+const getShuffledCards = (settings) => {
     const totalCards = settings.rows * settings.columns;
     const numPairs = totalCards / 2;
 
@@ -8,14 +26,6 @@ const buildGrid = (settings) => {
     for (let i = 0; i < 16; i++) {
         allCardNumbers.push(i);
     }
-
-    // Function to shuffle the array
-    const shuffleArray = (array) => {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    };
 
     // Shuffle the available card numbers
     shuffleArray(allCardNumbers);
@@ -32,6 +42,20 @@ const buildGrid = (settings) => {
     // Shuffle the card numbers to randomize their positions
     shuffleArray(cardNumbers);
 
+    return cardNumbers;
+};
+
+/**
+ * Builds a grid of card objects based on the settings.
+ * Each card object contains properties for the image number, 
+ * and boolean flags for flipped and matched states.
+ * @param {Object} settings - The game settings.
+ * @param {number} settings.rows - The number of rows in the grid.
+ * @param {number} settings.columns - The number of columns in the grid.
+ * @returns {Array} - The grid of card objects.
+ */
+const buildGrid = (settings) => {
+    const cardNumbers = getShuffledCards(settings);
     let grid = [];
     let cardIndex = 0;
     for (let i = 0; i < settings.rows; i++) {

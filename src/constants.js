@@ -1,0 +1,1 @@
+export const RANKS_LOCAL_STORAGE_KEY = 'ranks';

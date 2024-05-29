@@ -1,27 +1,41 @@
-function NameInput({ name, setName, setErrors }) {
-    const onChange = (e) => {
-        setErrors(prevState => ({ ...prevState, textInput: '' }));
-        const value = e.target.value.trim().toLowerCase();
-        if (value.length === 0) {
-            setErrors(prevState => ({ ...prevState, textInput: 'Name must be filled.' }));
-        }
-        const isOnlyAlphanumeric = /^[a-zA-Z0-9]+$/.test(value);
-        if (!isOnlyAlphanumeric) {
-            setErrors(prevState => ({ ...prevState, textInput: 'Name must contain only leters or numbers.' }));
-        }
+import React from 'react';
 
+/**
+ * NameInput component renders an input field for the user to enter their name.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.name - The current value of the name input.
+ * @param {Function} props.setName - Function to update the name state.
+ * @returns {JSX.Element} The rendered name input field.
+ */
+function NameInput({ name, setName }) {
+    /**
+     * Handles the change event for the name input field.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} e - The change event.
+     */
+    const onChange = (e) => {
+        const value = e.target.value.trim().toLowerCase();
         setName(value);
-    }
+    };
 
     return (
         <div className="container pt-3 text-center">
             <form>
                 <div className="form-group">
-                    <label for="nameInput" className="h4">Your name:</label> <br />
-                    <input value={name} onChange={onChange} type="name" class="form-control-lg" id="nameInput" placeholder="Enter name" maxLength="12" />
+                    <label htmlFor="nameInput" className="h4">Your name:</label> <br />
+                    <input
+                        value={name}
+                        onChange={onChange}
+                        type="text"
+                        className="form-control-lg"
+                        id="nameInput"
+                        placeholder="Enter name"
+                        maxLength="12"
+                    />
                 </div>
             </form>
-        </div >
+        </div>
     );
 }
 

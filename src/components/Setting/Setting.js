@@ -1,45 +1,66 @@
+import React from 'react';
 
-function Setting({ settings, setSettings, setErrors }) {
+/**
+ * Setting component renders a form to configure settings for rows, columns, and delay.
+ * 
+ * @param {Object} props - The component props
+ * @param {Object} props.settings - Current settings object with keys: rows, columns, delay
+ * @param {Function} props.setSettings - Function to update the settings
+ * @returns {JSX.Element} The rendered component
+ */
+function Setting({ settings, setSettings }) {
+    /**
+     * Creates an onChange handler for a specific key in the settings object.
+     * 
+     * @param {string} key - The key in the settings object to update
+     * @returns {Function} The event handler function
+     */
     const onChange = (key) => (e) => {
-        setErrors(prevState => ({ ...prevState, boardSize: '' }));
         const value = e.target.value;
         const updatedSettings = {
             ...settings,
             [key]: value,
-        }
-        console.log(updatedSettings);
-        const isSettingsValid = (updatedSettings.rows * updatedSettings.columns) % 2 === 0;
-        if (!isSettingsValid) {
-            setErrors(prevState => ({ ...prevState, boardSize: "Board size must be even number." }));
-        }
+        };
         setSettings(updatedSettings);
-
     }
+
     return (
         <div className="container pt-5 text-center form-group">
             <form>
-                <div class="row">
-                    <div class="col">
-                        <label for="NumberOfRows">Number of rows:</label>
-                        <select value={settings.rows} onChange={onChange('rows')} class="form-control" id="NumberOfRows" aria-describedby="">
+                <div className="row">
+                    <div className="col">
+                        <label htmlFor="NumberOfRows">Number of rows:</label>
+                        <select
+                            value={settings.rows}
+                            onChange={onChange('rows')}
+                            className="form-control"
+                            id="NumberOfRows">
                             <option>2</option>
                             <option>3</option>
                             <option>4</option>
                             <option>5</option>
                         </select>
                     </div>
-                    <div class="col">
-                        <label for="NumberOfColumns">Number of columns:</label>
-                        <select value={settings.columns} onChange={onChange('columns')} class="form-control" id="NumberOfColumns">
+                    <div className="col">
+                        <label htmlFor="NumberOfColumns">Number of columns:</label>
+                        <select
+                            value={settings.columns}
+                            onChange={onChange('columns')}
+                            className="form-control"
+                            id="NumberOfColumns">
                             <option>2</option>
                             <option>3</option>
                             <option>4</option>
                             <option>5</option>
                         </select>
                     </div>
-                    <div class="col">
-                        <label for="Delay">Delay (in seconds):</label>
-                        <select value={settings.delay} onChange={onChange('delay')} class="form-control" id="Delay">
+                    <div className="col">
+                        <label htmlFor="Delay">Delay (in seconds):</label>
+                        <select
+                            value={settings.delay}
+                            onChange={onChange('delay')}
+                            className="form-control"
+                            id="Delay">
                             <option>0.5</option>
                             <option>1</option>
                             <option>1.5</option>

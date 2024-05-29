@@ -6,6 +6,10 @@ import Setting from './components/Setting/Setting';
 import BackButton from './components/BackButton/BackButton';
 import Game from './components/Game/Game';
 import Rank from './components/Rank/Rank';
+
+import { useManageRanks } from './hooks/useManageRanks';
+import { useValidation } from './hooks/useValidation';
+
 import { useState } from 'react';
 
 function App() {
@@ -14,40 +18,39 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isScoresOpen, setIsScoresOpen] = useState(false);
-  const [ranks, setRanks] = useState({});
-  const [errors, setErrors] = useState({});
+
+  // Custom hooks
+  const { ranks, setRanks } = useManageRanks();
+  const { activeErrors } = useValidation({ name, settings });
 
 
-  const activeErrors = Object.values(errors).filter(val => !!val);
+  const shouldShowManu = !isPlaying && !isScoresOpen;
+  const hasErrors = activeErrors.length > 0;
   return (
     <div>
       <Header />
-
-      {!isPlaying && !isScoresOpen && (
+      {shouldShowManu && (
         <>
-          <NameInput name={name} setName={setName} setErrors={setErrors} />
-          < Menu setIsPlaying={!activeErrors.length ? setIsPlaying : () => { }} setIsSettingsOpen={setIsSettingsOpen} setIsScoresOpen={setIsScoresOpen} />
+          <NameInput name={name} setName={setName} />
+          <Menu setIsPlaying={!activeErrors.length ? setIsPlaying : () => { }} setIsSettingsOpen={setIsSettingsOpen} setIsScoresOpen={setIsScoresOpen} />
         </>
       )}
 
       {isPlaying && <Game ranks={ranks} setRanks={setRanks} name={name} setIsPlaying={setIsPlaying} settings={settings} />}
-      {isSettingsOpen && <Setting settings={settings} setSettings={setSettings} setErrors={setErrors} />}
+      {isSettingsOpen && <Setting settings={settings} setSettings={setSettings} />}
       {isScoresOpen && (
         <div className="text-center">
           <Rank ranks={ranks} />
           <BackButton onClick={() => setIsScoresOpen(false)} />
         </div>
       )}
-      {
-        (!isPlaying && !isScoresOpen && activeErrors.length > 0) && <div className='container alert alert-danger text-center mt-3  w-50'>
-          {activeErrors.map(error => (
-            <div>{error}</div>
-          ))}
-        </div>
+      {hasErrors && <div className='container alert alert-danger text-center mt-3 w-50'>
+        {activeErrors.map(error => (
+          <div>{error}</div>
+        ))}
+      </div>
       }
-
     </div>
-
   );
 }
 
